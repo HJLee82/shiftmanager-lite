@@ -13,3 +13,12 @@ A restaurant shift scheduling web app for managers
 - Tailwind CSS
 - Supabase
 - PostgreSQL
+
+## Page Structure
+
+/                       → Home Dashboard  
+/employees              → Employee List  
+/employees/add          → Add Employee  
+/employees/[id]         → Employee Detail  
+/schedule               → Weekly Schedule Overview  
+/schedule/[date]        → Schedule Detail
