@@ -1,16 +1,11 @@
 import Link from "next/link";
+import ProfileAvatar from "@/components/employees/ProfileAvatar";
 
-// 임시데이터
 const mockEmployees = [
   { id: "1", name: "Alice Johnson", role: "Server" },
   { id: "2", name: "Bob Smith", role: "Cook" },
   { id: "3", name: "Carol White", role: "Host" },
 ];
-
-// 이름 첫글자 추출 (프로필 사진 없을 때 이니셜 표시)
-function getInitial(name: string): string {
-  return name.charAt(0).toUpperCase();
-}
 
 export default function EmployeesPage() {
   return (
@@ -35,10 +30,7 @@ export default function EmployeesPage() {
               className="flex items-center justify-between bg-white border border-gray-200 rounded-lg px-5 py-4 hover:bg-gray-50"
             >
               <div className="flex items-center gap-4">
-                {/* 프로필 사진 자리 (이미지 없으면 이니셜 표시) */}
-                <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-semibold text-sm flex-shrink-0">
-                  {getInitial(employee.name)}
-                </div>
+                <ProfileAvatar name={employee.name} size="sm" />
                 <div>
                   <p className="font-medium text-gray-800">{employee.name}</p>
                   <p className="text-sm text-gray-400">{employee.role}</p>
