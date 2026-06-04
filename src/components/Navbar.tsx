@@ -17,6 +17,9 @@ export default function Navbar() {
           <Link href="/schedule" className="text-gray-600 hover:text-gray-900">
             Schedule
           </Link>
+          <Link href="/settings" className="text-gray-600 hover:text-gray-900">
+            Settings
+          </Link>
         </div>
       </div>
     </nav>
