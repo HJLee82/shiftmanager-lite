@@ -1,11 +1,14 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import WeeklySchedule from "@/components/schedule/WeeklySchedule";
+import WeekNavigation from "@/components/schedule/WeekNavigation";
 import { mockShifts, getMondayOfWeek, formatWeekRange } from "@/lib/mockData";
 
 export default function SchedulePage() {
   const [weekStart, setWeekStart] = useState(() => getMondayOfWeek(new Date()));
+  const monthLabel = new Date().toLocaleString("default", { month: "long" });
 
   function goToPrevWeek() {
     const prev = new Date(weekStart);
@@ -28,23 +31,20 @@ export default function SchedulePage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold text-gray-800">Weekly Schedule</h1>
-        <button
-          className="px-4 py-2 bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200 text-sm"
-          onClick={() => alert("Copy previous week - coming soon!")}
+        <Link
+          href="/schedule/monthly"
+          className="px-5 py-3 bg-orange-400 text-white rounded-lg hover:bg-orange-500 text-lg font-medium"
         >
-          Copy Previous Week
-        </button>
+          {monthLabel} Schedule
+        </Link>
       </div>
 
-      {/* Week Navigation */}
-      <div className="flex items-center gap-3">
-        <button onClick={goToPrevWeek} className="px-3 py-1 text-sm text-gray-600 hover:text-gray-900">←</button>
-        <span className="text-sm font-medium text-gray-700">{formatWeekRange(weekStart)}</span>
-        <button onClick={goToNextWeek} className="px-3 py-1 text-sm text-gray-600 hover:text-gray-900">→</button>
-        <button onClick={goToToday} className="px-3 py-1 text-sm text-blue-600 hover:text-blue-800 border border-blue-300 rounded-lg">
-          Today
-        </button>
-      </div>
+      <WeekNavigation
+        weekRange={formatWeekRange(weekStart)}
+        onPrev={goToPrevWeek}
+        onNext={goToNextWeek}
+        onToday={goToToday}
+      />
 
       <WeeklySchedule weekStart={weekStart} shifts={mockShifts} />
     </div>
