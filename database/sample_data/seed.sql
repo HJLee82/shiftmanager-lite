@@ -66,7 +66,7 @@ VALUES
   ('26666666-6666-6666-6666-666666666666', 'sat', '33333333-3333-3333-3333-333333333333'),
   ('26666666-6666-6666-6666-666666666666', 'sun', '33333333-3333-3333-3333-333333333333');
 
-INTO employee_unavailability (employee_id, unavailable_date, all_day)
+INSERT INTO employee_unavailability (employee_id, unavailable_date, all_day)
 VALUES
   ('21111111-1111-1111-1111-111111111111', '2026-06-15', true),  -- Alice
   ('22222222-2222-2222-2222-222222222222', '2026-06-10', true),  -- Bob
