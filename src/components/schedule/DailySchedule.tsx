@@ -33,11 +33,23 @@ function InlineEditForm({
   onCancel: () => void;
 }) {
   const settings = loadSettings();
+
+  // 현재 shift의 setting id 찾기
+  const currentShiftSetting = settings.shifts.find((s) => {
+    const startHour = parseInt(s.start.replace(/am|pm/i, "").split(":")[0]);
+    const isPm = s.start.toLowerCase().includes("pm");
+    const actualHour = isPm && startHour !== 12 ? startHour + 12 : startHour;
+    return actualHour === shift.startHour;
+  });
+
   const emp = [...availableEmployees, ...otherEmployees].find(
     (e) => e.name === shift.employeeName
   );
+
   const [selectedEmployeeId, setSelectedEmployeeId] = useState(emp?.id ?? "");
-  const [selectedShiftId, setSelectedShiftId] = useState(settings.shifts[0]?.id ?? "");
+  const [selectedShiftId, setSelectedShiftId] = useState(
+    currentShiftSetting?.id ?? settings.shifts[0]?.id ?? ""
+  );
 
   return (
     <div className="bg-gray-50 border border-gray-200 rounded-lg p-3 space-y-3">
