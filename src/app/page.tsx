@@ -1,5 +1,6 @@
 import Link from "next/link";
 import WeeklySchedule from "@/components/schedule/WeeklySchedule";
+import StoreSelector from "@/components/StoreSelector";
 import { mockShifts, getMondayOfWeek, formatWeekRange } from "@/lib/mockData";
 
 export default function HomePage() {
@@ -8,6 +9,9 @@ export default function HomePage() {
 
   return (
     <div className="space-y-8">
+      {/* Store Selector */}
+      <StoreSelector />
+
       <h1 className="text-2xl font-bold text-gray-800">Dashboard</h1>
 
       {/* Weekly Schedule */}

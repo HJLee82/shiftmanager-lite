@@ -15,7 +15,6 @@ type StoreContextType = {
 
 const StoreContext = createContext<StoreContextType | null>(null);
 
-// 나중에 Supabase 연동하면 실제 데이터로 교체
 const mockStores: Store[] = [
   { id: "11111111-1111-1111-1111-111111111111", name: "Seattle Store" },
   { id: "22222222-2222-2222-2222-222222222222", name: "Bellevue Store" },
