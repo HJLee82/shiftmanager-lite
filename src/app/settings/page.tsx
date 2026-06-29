@@ -9,14 +9,17 @@ import {
   type StoreSettings,
   type DayOfWeek,
 } from "@/lib/settingsStore";
+import { useStore } from "@/context/StoreContext";
+import StoreSelector from "@/components/StoreSelector";
 
 export default function SettingsPage() {
+  const { selectedStore } = useStore();
   const [settings, setSettings] = useState<StoreSettings>(defaultSettings);
-  const [saved, setSaved] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);
 
   useEffect(() => {
     setSettings(loadSettings());
-  }, []);
+  }, [selectedStore]);
 
   function handleDayToggle(day: DayOfWeek) {
     setSettings((prev) => ({
@@ -68,12 +71,15 @@ export default function SettingsPage() {
 
   function handleSave() {
     saveSettings(settings);
-    setSaved(true);
-    setTimeout(() => setSaved(false), 2000);
+    setShowPopup(true);
+    setTimeout(() => setShowPopup(false), 3000);
   }
 
   return (
     <div className="space-y-8">
+      {/* Store Selector */}
+      <StoreSelector />
+
       <h1 className="text-2xl font-bold text-gray-800">Store Settings</h1>
 
       {/* Store Open Hours */}
@@ -81,7 +87,6 @@ export default function SettingsPage() {
         <h2 className="text-lg font-semibold text-gray-700">Store Open Hours</h2>
         {DAYS_OF_WEEK.map((day) => (
           <div key={day} className="flex items-center gap-4">
-            {/* Day toggle */}
             <div className="flex items-center gap-2 w-24">
               <input
                 type="checkbox"
@@ -92,10 +97,8 @@ export default function SettingsPage() {
               <span className="text-sm font-medium text-gray-700">{day}</span>
             </div>
 
-            {/* Time inputs */}
             {settings.storeHours[day].open ? (
               <div className="flex items-center gap-2">
-                {/* Open */}
                 <input
                   type="number"
                   min={1}
@@ -126,7 +129,6 @@ export default function SettingsPage() {
                   <option value="pm">PM</option>
                 </select>
                 <span className="text-gray-400 text-sm">to</span>
-                {/* Close */}
                 <input
                   type="number"
                   min={1}
@@ -202,7 +204,6 @@ export default function SettingsPage() {
             <div key={shift.id} className="flex items-center gap-4">
               <span className="text-sm font-medium text-gray-700 w-24">{shift.name}</span>
               <div className="flex items-center gap-2">
-                {/* 시작 시간 - 시 */}
                 <input
                   type="number"
                   min={1}
@@ -215,7 +216,6 @@ export default function SettingsPage() {
                   }}
                   className="border border-gray-300 rounded px-3 py-1 text-sm w-16 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
-                {/* 시작 시간 - 분 */}
                 <select
                   value={parseHour(shift.start).split(":")[1] ?? "00"}
                   onChange={(e) => {
@@ -228,7 +228,6 @@ export default function SettingsPage() {
                   <option value="00">:00</option>
                   <option value="30">:30</option>
                 </select>
-                {/* AM/PM */}
                 <select
                   value={parsePeriod(shift.start)}
                   onChange={(e) => {
@@ -242,7 +241,6 @@ export default function SettingsPage() {
                   <option value="pm">PM</option>
                 </select>
                 <span className="text-gray-400 text-sm">to</span>
-                {/* 끝시간 - 고정 표시 */}
                 <span className="text-sm text-gray-400 bg-gray-100 border border-gray-200 rounded px-3 py-1">
                   {endLabel}
                 </span>
@@ -257,8 +255,21 @@ export default function SettingsPage() {
         onClick={handleSave}
         className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm"
       >
-        {saved ? "Saved!" : "Save Settings"}
+        Save Settings
       </button>
+
+      {/* Popup */}
+      {showPopup && (
+        <div className="fixed inset-0 flex items-center justify-center z-50">
+          <div className="bg-gray-900 text-white px-12 py-8 rounded-2xl shadow-2xl text-center space-y-2">
+            <p className="text-3xl">✅</p>
+            <p className="text-xl font-bold">Settings Saved!</p>
+            <p className="text-base text-gray-300">
+              Changes applied to <span className="text-blue-400 font-semibold">{selectedStore?.name}</span>
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
